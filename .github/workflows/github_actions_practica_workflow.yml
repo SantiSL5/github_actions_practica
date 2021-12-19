@@ -46,4 +46,13 @@ jobs:
         with:
           name: cypress-artifact
       - id: cypress-result
-        run: cat result.txt
+        run: echo "::set-output name=cypress_outcome::$(cat result.txt)"
+      - uses: ./.github/actions/badge_readme
+        with:
+          cypress-outcome: ${{ steps.cypress-result.outputs.cypress_outcome }}
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with: 
+          # Optional, but recommended
+          commit_message: Update readme badge test result
+          # Optional glob pattern of files which should be added to the commit
+          file_pattern: README.md

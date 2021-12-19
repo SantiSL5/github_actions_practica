@@ -1,0 +1,14 @@
+name: 'Readme badge'
+description: 'Insert badge on readme'
+inputs:
+  result:
+    description: 'Result of tests'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - run: chmod +x ${{ github.action_path }}/script.sh
+      shell: bash
+    - run: ${{ github.action_path }}/script.sh ${{ inputs.result }}
+      shell: bash
+
