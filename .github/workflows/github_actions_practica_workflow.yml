@@ -84,7 +84,8 @@ jobs:
           email: ${{ secrets.EMAIL }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: Resultado del workflow ejecutado
-          text: Se ha realizado un push en la rama main que ha provocado la ejecución del workflow nombre_repositorio_workflow con los siguientes resultados:
+          text: | 
+          Se ha realizado un push en la rama main que ha provocado la ejecución del workflow nombre_repositorio_workflow con los siguientes resultados:
 
               - Linter_job: ${{ needs.Linter_job.result }}
               - Cypress_job: ${{ needs.Cypress_job.result }}
