@@ -11,7 +11,8 @@ jobs:
         run: |
           npm install
           npm run lint
-  Cypress-job:
+          
+  Cypress_job:
     runs-on: ubuntu-latest
     name: Cypress job
     needs: Linter_job
@@ -36,9 +37,11 @@ jobs:
         with:
           name: cypress-artifact
           path: ./result.txt
-  Add-badge-job:
+          
+  Add_badge_job:
     runs-on: ubuntu-latest
-    needs: Cypress-job
+    needs: Cypress_job
+    if: ${{ always() }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
@@ -56,14 +59,34 @@ jobs:
           commit_message: Update readme badge test result
           # Optional glob pattern of files which should be added to the commit
           file_pattern: README.md
+          
   Deploy_job:
     runs-on: ubuntu-latest
-    needs: Add-badge-job
+    needs: Cypress-job
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
       - uses: amondnet/vercel-action@v20
         with:
           vercel-token: ${{ secrets.VERCEL_TOKEN }} # Required
-          vercel-org-id: ${{ secrets.ORG_ID}}  #Required
-          vercel-project-id: ${{ secrets.PROJECT_ID}} #Required
+          vercel-org-id: ${{ secrets.ORG_ID }}  #Required
+          vercel-project-id: ${{ secrets.PROJECT_ID }} #Required
+
+  Notification_job:
+    runs-on: ubuntu-latest
+    needs: [ Linter_job, Cypress_job, Add_badge_job, Deploy_job ]
+    if: ${{ always() }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - uses: ./.github/actions/notification
+        with:
+          email: ${{ secrets.EMAIL }}
+          password: ${{ secrets.EMAIL_PASSWORD }}
+          subject: Resultado del workflow ejecutado
+          text: Se ha realizado un push en la rama main que ha provocado la ejecución del workflow nombre_repositorio_workflow con los siguientes resultados:
+
+              - Linter_job: ${{ needs.Linter_job.result }}
+              - Cypress_job: ${{ needs.Cypress_job.result }}
+              - Add_badge_job: ${{ needs.Add_badge_job.result }}
+              - Deploy_job: ${{ needs.Deploy_job.result }}

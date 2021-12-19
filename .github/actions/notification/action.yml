@@ -1,0 +1,18 @@
+name: 'Notification'
+description: 'Send a email with the results of the jobs'
+inputs:
+    email:
+        description: 'Email'
+        required: true
+    password:
+        description: 'Email app password'
+        required: true
+    subject:
+        description: 'Subject'
+        required: true
+    text:
+        description: 'Text body'
+        required: true
+runs:
+    using: 'node14'
+    main: 'dist/index.js'
