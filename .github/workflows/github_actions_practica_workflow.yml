@@ -46,4 +46,4 @@ jobs:
         with:
           name: cypress-artifact
       - id: cypress-result
-        run: echo "::set-output name=cypress_outcome::$(cat result.txt)"
+        run: cat result.txt
