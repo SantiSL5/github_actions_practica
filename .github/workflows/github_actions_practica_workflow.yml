@@ -45,15 +45,18 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - name: Download Artifact
+        uses: actions/download-artifact@v2
         with:
           name: cypress-artifact
       - id: cypress-result
         run: echo "::set-output name=cypress_outcome::$(cat result.txt)"
-      - uses: ./.github/actions/badge_readme
+      - name: Readme modify badge
+        uses: ./.github/actions/badge_readme
         with:
           result: ${{ steps.cypress-result.outputs.cypress_outcome }}
-      - uses: stefanzweifel/git-auto-commit-action@v4
+      - name: Auto commit
+        uses: stefanzweifel/git-auto-commit-action@v4
         with: 
           # Optional, but recommended
           commit_message: Update readme badge test result
@@ -79,13 +82,14 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - uses: ./.github/actions/notification
+      - name: Email send notification
+        uses: ./.github/actions/notification
         with:
           email: ${{ secrets.EMAIL }}
           password: ${{ secrets.EMAIL_PASSWORD }}
           subject: Resultado del workflow ejecutado
           text: | 
-          Se ha realizado un push en la rama main que ha provocado la ejecución del workflow nombre_repositorio_workflow con los siguientes resultados:
+            Se ha realizado un push en la rama main que ha provocado la ejecución del workflow nombre_repositorio_workflow con los siguientes resultados:
 
               - Linter_job: ${{ needs.Linter_job.result }}
               - Cypress_job: ${{ needs.Cypress_job.result }}
