@@ -24,9 +24,11 @@ jobs:
         if: always()
         id: cypress
         uses: cypress-io/github-action@v2
+        continue-on-error: true
         with:
           build: npm run build
           start: npm start
+          config-file: cypress.json
       - name: Cypress results
         run: echo ${{ steps.cypress.outcome }} > result.txt
       - name: Create artifact
