@@ -56,7 +56,7 @@ jobs:
           commit_message: Update readme badge test result
           # Optional glob pattern of files which should be added to the commit
           file_pattern: README.md
-   Deploy_job:
+  Deploy_job:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
