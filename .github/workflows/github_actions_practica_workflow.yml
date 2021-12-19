@@ -11,3 +11,26 @@ jobs:
         run: |
           npm install
           npm run lint
+  Cypress-job:
+    runs-on: ubuntu-latest
+    name: Cypress job
+    needs: Linter_job
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      # Install NPM dependencies, cache them correctly
+      # and run all Cypress tests
+      - name: Cypress run
+        if: always()
+        id: cypress
+        uses: cypress-io/github-action@v2
+        with:
+          build: npm run build
+          start: npm start
+      - name: Cypress results
+        run: echo ${{ steps.cypress.outcome }} > result.txt
+      - name: Create artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: cypress-artifact
+          path: ./result.txt
