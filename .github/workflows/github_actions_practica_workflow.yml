@@ -36,15 +36,14 @@ jobs:
         with:
           name: cypress-artifact
           path: ./result.txt
-  add-badge-job:
+  Add-badge-job:
     runs-on: ubuntu-latest
     needs: cypress-job
-    if: ${{ always() }}
     steps:
       - name: Checkout Code
         uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
         with:
-          name: Cypress result
+          name: cypress-artifact
       - id: cypress-result
         run: echo "::set-output name=cypress_outcome::$(cat result.txt)"
