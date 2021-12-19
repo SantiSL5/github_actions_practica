@@ -65,7 +65,7 @@ jobs:
           
   Deploy_job:
     runs-on: ubuntu-latest
-    needs: Cypress-job
+    needs: Cypress_job
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
