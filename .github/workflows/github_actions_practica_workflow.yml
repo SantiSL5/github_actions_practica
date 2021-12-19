@@ -22,7 +22,7 @@ jobs:
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cypress run
-        if: always()
+        if: ${{ always() }}
         id: cypress
         uses: cypress-io/github-action@v2
         continue-on-error: true
