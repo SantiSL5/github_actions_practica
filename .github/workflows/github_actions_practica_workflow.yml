@@ -56,3 +56,13 @@ jobs:
           commit_message: Update readme badge test result
           # Optional glob pattern of files which should be added to the commit
           file_pattern: README.md
+   Deploy_job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - uses: amondnet/vercel-action@v20
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }} # Required
+          vercel-org-id: ${{ secrets.ORG_ID}}  #Required
+          vercel-project-id: ${{ secrets.PROJECT_ID}} #Required
